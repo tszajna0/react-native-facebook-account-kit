@@ -112,6 +112,11 @@ var proxy = httpProxy.createProxyServer({
 });
 
 var app = express();
+
+app.get('/healthcheck', function(req, res, next) {
+  res.send();
+});
+
 app.use(compress());
 if (argv.u && argv.a) {
   app.use(basicAuth(argv.u, argv.a));
