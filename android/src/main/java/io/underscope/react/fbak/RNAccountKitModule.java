@@ -17,6 +17,7 @@ import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
+import com.facebook.accountkit.ui.UIManager;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -35,16 +36,17 @@ public class RNAccountKitModule extends ReactContextBaseJavaModule implements Ac
     private ReactApplicationContext reactContext;
     private Promise pendingPromise;
     private ReadableMap options;
+    private UIManager uiManager;
 
     public static int APP_REQUEST_CODE = 99;
     public static String REACT_CLASS = "RNAccountKit";
 
-    public RNAccountKitModule(ReactApplicationContext reactContext) {
+    public RNAccountKitModule(ReactApplicationContext reactContext, UIManager uiManager) {
         super(reactContext);
 
         this.reactContext = reactContext;
         this.reactContext.addActivityEventListener(this);
-
+        this.uiManager = uiManager;
 
         AccountKit.initialize(reactContext.getApplicationContext());
     }
@@ -203,6 +205,9 @@ public class RNAccountKitModule extends ReactContextBaseJavaModule implements Ac
                         AccountKitActivity.ResponseType.valueOf(
                                 this.options.getString("responseType").toUpperCase()));
 
+        if (uiManager != null) {
+            configurationBuilder.setUIManager(uiManager);
+        }
         configurationBuilder.setTitleType(
                 AccountKitActivity.TitleType.valueOf(this.options.getString("titleType").toUpperCase()));
 

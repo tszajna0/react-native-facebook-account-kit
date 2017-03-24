@@ -6,12 +6,21 @@ import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
+import com.facebook.accountkit.ui.UIManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class RNAccountKitPackage implements ReactPackage {
+    private UIManager uiManager;
+
+    public RNAccountKitPackage() {
+    }
+
+    public RNAccountKitPackage(UIManager uiManager) {
+        this.uiManager = uiManager;
+    }
 
     @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
@@ -26,7 +35,7 @@ public class RNAccountKitPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNAccountKitModule(reactContext));
+        modules.add(new RNAccountKitModule(reactContext, uiManager));
         return modules;
     }
 }
